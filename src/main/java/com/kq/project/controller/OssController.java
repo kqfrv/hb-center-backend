@@ -23,6 +23,7 @@ import java.security.NoSuchAlgorithmException;
 @Api("Minio文件管理")
 @RestController
 @RequestMapping("/fileOss")
+@CrossOrigin(origins = {"*"}, allowCredentials = "true")
 public class OssController {
 
     @Resource

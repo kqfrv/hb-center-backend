@@ -12,7 +12,6 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
     /**
      * 跨越解决
-     * @param registry
      */
     @Override
     public void addCorsMappings(CorsRegistry registry) {

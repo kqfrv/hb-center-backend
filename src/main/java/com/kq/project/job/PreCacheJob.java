@@ -1,6 +1,7 @@
 package com.kq.project.job;
 
 
+import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.kq.project.model.entity.User;
@@ -37,20 +38,24 @@ public class PreCacheJob {
 
     List<Integer> mainUserList = Arrays.asList(1);
     //每天执行，预热推荐用户
-    @Scheduled(cron = "0 30 0 * * *")
+    @Scheduled(cron = "0 10 11 * * *")
     public void  doCacheRecommendUser(){
-        RLock lock = redissonClient.getLock("yupao:precachejob:docache:lock");
+        RLock lock = redissonClient.getLock("hb:precachejob:docache:lock");
         try {
             //加锁
             if (lock.tryLock(0,30000L,TimeUnit.MILLISECONDS)){
                 System.out.println("getLock"+Thread.currentThread().getId());
                 for (Integer userId : mainUserList) {
                     QueryWrapper<User> queryWrapper = new QueryWrapper<>();
-                    Page<User>  userPage = userService.page(new Page<>(1,20),queryWrapper);
-                    String redisKey = String.format("yupao:user:recommend:%s",userId);
+                    Page<User> userPage = userService.page(new Page<>(1,20),queryWrapper);
+                    List<User> records = userPage.getRecords();
+                    for (User user : records) {
+                        user.setUserPassword(null);
+                    }
+                    String redisKey = String.format("kq:user:recommend:%s",userId);
                     ValueOperations valueOperations = redisTemplate.opsForValue();
                     try {
-                        valueOperations.set(redisKey,userPage,1000000, TimeUnit.MILLISECONDS);
+                        valueOperations.set(redisKey, JSON.toJSONString(userPage));
                     } catch (Exception e) {
                         log.error("redis set key error",e);
                     }

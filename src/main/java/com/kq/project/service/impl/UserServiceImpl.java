@@ -40,23 +40,20 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.DigestUtils;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 /**
  * 用户服务实现类
- *
- * @author yupi
  */
 @Service
 @Slf4j
 @SuppressWarnings("all")
+@CrossOrigin(origins = {"*"}, allowCredentials = "true")
 public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         implements UserService {
 
     @Resource
     private UserMapper userMapper;
-
-    @Resource
-    private StringRedisTemplate stringRedisTemplate;
 
     @Autowired
     private RedisTemplate redisTemplate;
@@ -192,10 +189,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         }
     }
 
-
-    /**
-     * 获取当前登录用户的信息
-     */
     @Override
     public User getLoginUser(HttpServletRequest request) {
         if (request == null) {
@@ -235,7 +228,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         }).map(this::getSafetyUser).collect(Collectors.toList());
         return collect;
     }
-
 
     @Override
     public int updateUser(User user, User loginUser) {
