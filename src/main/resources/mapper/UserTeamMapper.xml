@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kq.project.mapper.UserTeamMapper">
+
+    <resultMap id="BaseResultMap" type="com.kq.project.model.entity.UserTeam">
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <result property="userId" column="userId" jdbcType="BIGINT"/>
+        <result property="teamId" column="teamId" jdbcType="BIGINT"/>
+        <result property="joinTime" column="joinTime" jdbcType="TIMESTAMP"/>
+        <result property="createTime" column="createTime" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="updateTime" jdbcType="TIMESTAMP"/>
+        <result property="isDelete" column="isDelete" jdbcType="TINYINT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id
+        ,userId,teamId,
+        joinTime,createTime,updateTime,
+        isDelete
+    </sql>
+    <select id="listMyJoinTeam" resultType="com.kq.project.model.vo.TeamUserVO">
+        select *
+        from team
+                 left join user_team on team.id = user_team.teamId
+        where user_team.userId = #{id}
+          and team.isDelete = 0
+          and user_team.isDelete = 0
+    </select>
+</mapper>

@@ -1,0 +1,53 @@
+spring:
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+  application:
+    name: user-center-backend
+  # DataSource Config
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://114.116.83.139:3306/yupao?serverTimezone=Asia/Shanghai
+    username: root
+    password: kuangqi1234
+    hikari:
+      max-lifetime: 120000
+  #    解决swagger不匹配的问题
+  mvc:
+    pathmatch:
+      matching-strategy: ANT_PATH_MATCHER
+  # session 失效时间（分钟）
+  session:
+    timeout: 86400
+    store-type: redis  #内存空间
+  # redis 配置
+  redis:
+    port: 6379
+    host: 114.116.83.139
+    database: 0
+    password: 123456
+server:
+  port: 8081
+  servlet:
+    context-path: /api
+    session:
+      cookie:
+        domain: localhost
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: false
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    db-config:
+      logic-delete-field: isDelete # 全局逻辑删除的实体字段名(since 3.3.0,配置后可以忽略不配置步骤2)
+      logic-delete-value: 1 # 逻辑已删除值(默认为 1)
+      logic-not-delete-value: 0 # 逻辑未删除值(默认为 0)
+
+minio:
+  url: http://114.116.83.139:9000 # Minio服务的URL
+  accessKey: minioadmin # Minio服务的Access Key
+  secretKey: minioadmin # Minio服务的Secret Key
+  bucketName: kqfrv
+logging:
+  level:
+    com.kq.project: warn
