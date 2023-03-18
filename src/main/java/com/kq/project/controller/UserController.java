@@ -33,7 +33,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/user")
 @Api("用户管理")
-@CrossOrigin(origins = {"*"}, allowCredentials = "true")
+@CrossOrigin(origins = {"114.116.83.139"}, allowCredentials = "true")
 public class UserController {
 
     @Resource

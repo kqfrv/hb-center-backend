@@ -40,7 +40,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/team")
 @Slf4j
 @Api("队伍管理")
-@CrossOrigin(origins = {"*"}, allowCredentials = "true")
+@CrossOrigin(origins = {"114.116.83.139"}, allowCredentials = "true")
 public class TeamController {
 
     @Resource
